@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gensini 评分计算器优化版</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <section class="hero">
+      <p class="eyebrow">冠脉造影辅助工具</p>
+      <h1>Gensini 评分计算器优化版</h1>
+      <p class="intro">
+        粘贴冠脉造影手术记录后，系统会尝试提取各分支最严重狭窄并自动计算 Gensini 评分。
+        当前支持“中华版”“简化临床版”和“文献原始版”三种模式。其中中华版严格按你提供的中文规则计算，不考虑冠脉优势，也不做侧支循环校正。
+      </p>
+    </section>
+
+    <section class="panel input-panel">
+      <div class="panel-head">
+        <h2>1. 输入手术记录</h2>
+        <div class="selectors">
+          <label>
+            <span>计算模式</span>
+            <select id="modeSelect">
+              <option value="chinese" selected>中华版</option>
+              <option value="original">文献原始版</option>
+              <option value="simplified">简化临床版</option>
+            </select>
+          </label>
+          <label>
+            <span>优势型</span>
+            <select id="dominanceSelect">
+              <option value="auto" selected>自动识别</option>
+              <option value="right">手动右优势</option>
+              <option value="left">手动左优势</option>
+            </select>
+          </label>
+        </div>
+        <div class="actions">
+          <button id="templateBtn" type="button">插入录入模板</button>
+          <button id="clearBtn" type="button" class="ghost">清空</button>
+        </div>
+      </div>
+      <textarea
+        id="recordInput"
+        placeholder="可直接粘贴原始冠脉造影记录，或使用结构化模板逐项填写。"
+      ></textarea>
+      <div class="actions bottom-actions">
+        <button id="analyzeBtn" type="button" class="primary">解析并计算</button>
+      </div>
+    </section>
+
+    <section class="panel result-panel">
+      <div class="panel-head">
+        <h2>2. 分支明细</h2>
+        <p class="hint">仅对识别到的明确狭窄百分比或闭塞描述自动评分；含糊表述会提示人工确认。</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>分支</th>
+              <th>系数</th>
+              <th>原文片段</th>
+              <th>狭窄(%)</th>
+              <th>基础分</th>
+              <th>侧支校正</th>
+              <th>校正后分</th>
+              <th>加权分</th>
+              <th>状态</th>
+            </tr>
+          </thead>
+          <tbody id="branchTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel summary-panel">
+      <div class="summary-grid">
+        <div class="summary-card">
+          <span class="summary-label">Gensini 总分</span>
+          <strong id="totalScore">0</strong>
+        </div>
+        <div class="summary-card">
+          <span class="summary-label">已计分分支数</span>
+          <strong id="scoredCount">0</strong>
+        </div>
+        <div class="summary-card">
+          <span class="summary-label">待确认项目</span>
+          <strong id="warningCount">0</strong>
+        </div>
+        <div class="summary-card">
+          <span class="summary-label">计算模式</span>
+          <strong id="modeSummary">中华版</strong>
+        </div>
+        <div class="summary-card">
+          <span class="summary-label">优势型</span>
+          <strong id="dominanceSummary">未识别</strong>
+        </div>
+        <div class="summary-card wide">
+          <span class="summary-label">侧枝循环</span>
+          <strong id="collateralSummary">未识别</strong>
+        </div>
+      </div>
+      <div class="notes">
+        <h2>3. 提示信息</h2>
+        <ul id="messages"></ul>
+      </div>
+    </section>
+  </main>
+
+  <script src="gensini.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "name": "gensini-zh-calculator",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Gensini评分计算器优化版，支持中华版、文献原始版和简化临床版。",
+  "scripts": {
+    "test": "node test.js",
+    "serve": "npx http-server . -p 4173 -c-1"
+  }
+}
